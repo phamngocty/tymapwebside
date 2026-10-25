@@ -1,45 +1,20 @@
 {
   "app": {
-    "versionCode": 24,
-    "versionName": "1.0.24",
-    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.24/app-debug.apk",
+    "versionCode": 39,
+    "versionName": "1.0.39",
+    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.39/app-debug.apk",
     "apkName": "app-debug.apk",
-    "changelog": "• Khắc phục triệt để chất lượng bản đồ Stamen Toner Lines gửi sang ESP32-C3/OLED: loại bỏ hoàn toàn hiện tượng nhòe mờ, tối ưu đường nét đơn sắc siêu nét và độ tương phản cao.\n• Hiển thị cố định cài đặt Tốc độ khung hình (FPS) và Chất lượng truyền ảnh sang ESP32 trên cả OLED và GC9A01.\n• Khắc phục hoàn toàn lỗi cuộn trang Cài đặt, giúp nhập API Key Stadia / Goong / Weather dễ dàng.\n• Tối giản mục Dẫn đường: giữ lại chuẩn xác Báo chệch hướng (ICE) và khoảng cách báo chệch hướng, ẩn các tùy chọn dư thừa."
-  },
-  "firmware_gc9a01": {
-    "name": "Màn hình tròn màu GC9A01",
-    "versionCode": 24,
-    "versionName": "1.0.24",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.24/firmware_gc9a01.bin",
-    "binName": "firmware_gc9a01.bin",
-    "changelog": "• Tối ưu giao diện đồng hồ tròn và hiệu ứng mũi tên rẽ mượt mà."
-  },
-  "firmware_oled": {
-    "name": "Màn hình chữ nhật OLED SSD1306",
-    "versionCode": 24,
-    "versionName": "1.0.24",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.24/firmware_oled.bin",
-    "binName": "firmware_oled.bin",
-    "changelog": "• Tối ưu đồ họa 1bpp monochrome và tiết kiệm RAM tối đa."
-  },
-  "firmware_sygic_ios": {
-    "name": "Firmware Sygic Dẫn Đường iOS",
-    "versionCode": 24,
-    "versionName": "1.0.24",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.24/firmware_sygic_ios.bin",
-    "binName": "firmware_sygic_ios.bin",
-    "changelog": "• Tương thích giao thức BLE Sygic Navigation trên iOS."
+    "changelog": "• Mở Khóa CartoDB Dark Hoàn Toàn Miễn Phí (Không Bắt Buộc Nhập API Key): Chuyển đổi trạng thái dịch vụ CartoDB Dark All thành dịch vụ miễn phí 100%, không còn bị chặn hay bắt buộc nhập API key trong mục Cài đặt và Kết nối.\n• Tích Hợp Nguồn Bản Đồ Mới: Esri Dark Canvas (Miễn Phí Toàn Cầu): Bổ sung nguồn bản đồ Esri Dark Canvas nổi tiếng với độ mượt mà tuyệt đối, tông màu xám đen sang trọng, tương phản cao, nạp siêu tốc và hỗ trợ tải offline đến Zoom 18 mà không cần đăng ký tài khoản."
   },
   "firmware": {
-    "versionCode": 24,
-    "versionName": "1.0.24",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.24/firmware_gc9a01.bin",
-    "binName": "firmware_gc9a01.bin",
-    "secondaryBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.24/firmware_oled.bin",
-    "secondaryBinName": "firmware_oled.bin",
-    "oledBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.24/firmware_oled.bin",
-    "iosBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.24/firmware_sygic_ios.bin",
-    "changelog": "• Cập nhật firmware phiên bản mới nhất."
+    "versionCode": 39,
+    "versionName": "1.0.39",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.39/firmware.bin",
+    "binName": "firmware.bin",
+    "secondaryBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.39/secondary_firmware.bin",
+    "secondaryBinName": "secondary_firmware.bin",
+    "oledBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.39/secondary_firmware.bin",
+    "changelog": "• Mở Khóa CartoDB Dark Hoàn Toàn Miễn Phí (Không Bắt Buộc Nhập API Key): Chuyển đổi trạng thái dịch vụ CartoDB Dark All thành dịch vụ miễn phí 100%, không còn bị chặn hay bắt buộc nhập API key trong mục Cài đặt và Kết nối.\n• Tích Hợp Nguồn Bản Đồ Mới: Esri Dark Canvas (Miễn Phí Toàn Cầu): Bổ sung nguồn bản đồ Esri Dark Canvas nổi tiếng với độ mượt mà tuyệt đối, tông màu xám đen sang trọng, tương phản cao, nạp siêu tốc và hỗ trợ tải offline đến Zoom 18 mà không cần đăng ký tài khoản."
   },
   "assets": []
 }

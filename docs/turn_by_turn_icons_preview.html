@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapbox Directions Icons Official Suite - TYMAP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0B0F19;
+      --card-bg: rgba(22, 30, 49, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(30, 41, 59, 0.95);
+      --accent-blue: #38BDF8;
+      --google-nav-green: #1E8E3E;
+      --google-nav-blue: #1A73E8;
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 40px 24px;
+      line-height: 1.5;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(30, 142, 62, 0.08) 0%, transparent 40%);
+    }
+
+    .container { max-width: 1400px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 40px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--accent-blue);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #FFFFFF 30%, #94A3B8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 800px;
+      margin: 0 auto 24px;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #0284C7, #0369A1);
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.35);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(2, 132, 199, 0.5);
+    }
+
+    /* Controls Bar */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 40px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 12px 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      max-width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .btn-toggle {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-toggle:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .btn-toggle.active {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: #0B0F19;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+    }
+
+    /* Grid Sections */
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: var(--accent-blue);
+      border-radius: 2px;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    /* Icon Card */
+    .icon-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .icon-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.4);
+      background: var(--card-hover);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.15);
+    }
+
+    .icon-preview-box {
+      width: 100px;
+      height: 100px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      transition: all 0.2s ease;
+      padding: 12px;
+    }
+
+    /* Theme Styles */
+    .theme-google-nav .icon-preview-box {
+      background: var(--google-nav-green);
+      box-shadow: 0 8px 24px rgba(30, 142, 62, 0.35);
+      color: #FFFFFF;
+    }
+    .theme-google-nav .icon-preview-box svg {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+    }
+
+    .theme-google-blue .icon-preview-box {
+      background: var(--google-nav-blue);
+      box-shadow: 0 8px 24px rgba(26, 115, 232, 0.35);
+      color: #FFFFFF;
+    }
+    .theme-google-blue .icon-preview-box svg {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+    }
+
+    .theme-dark .icon-preview-box {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #38BDF8;
+    }
+    .theme-dark .icon-preview-box svg {
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.45));
+    }
+
+    .theme-oled .icon-preview-box {
+      background: #000000;
+      border: 1px solid #334155;
+      color: #FFFFFF;
+    }
+
+    .icon-info { width: 100%; }
+
+    .icon-code-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .icon-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .icon-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin-bottom: 12px;
+      min-height: 36px;
+    }
+
+    .icon-file-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    /* ESP32 Simulation Card */
+    .oled-simulation-card {
+      margin-top: 50px;
+      background: linear-gradient(145deg, #131B2E, #0F172A);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.7);
+    }
+
+    .oled-screen-mockup {
+      width: 320px;
+      height: 160px;
+      background: #000000;
+      border: 6px solid #1E293B;
+      border-radius: 12px;
+      margin: 20px auto 0;
+      padding: 16px;
+      box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05), 0 0 30px rgba(56, 189, 248, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #FFFFFF;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .oled-icon-slot {
+      width: 76px;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .oled-icon-slot svg {
+      width: 72px;
+      height: 72px;
+      fill: #FFFFFF;
+    }
+
+    .oled-nav-info { flex: 1; }
+
+    .oled-dist {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .oled-street {
+      font-size: 12px;
+      color: #94A3B8;
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--accent-blue);
+      color: #0B0F19;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body class="theme-google-nav">
+
+  <div class="container">
+    <header>
+      <div class="badge">Official Mapbox Directions Icons Suite • CC0 1.0 Universal</div>
+      <h1>Mapbox Turn-by-Turn Navigation Icons</h1>
+      <p class="subtitle">
+        Trích xuất 100% nguyên bản từ thư viện chính thức <b>mapbox/directions-icons</b>: Lưới chuẩn 20x20 pixel-aligned, tỷ lệ vàng khí động học, bo cong góc chuẩn xác, không bao giờ lệch tâm.
+      </p>
+
+      <div class="nav-links">
+        <a href="live_navigation_simulator.html" class="btn-link">
+          <span>🚗</span> Bấm để xem Mô Phỏng Lái Xe Dữ Liệu Thực Tế (Live Simulator)
+        </a>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <div class="control-group">
+          <span class="control-label">Chế độ giao diện:</span>
+          <button class="btn-toggle active" onclick="setTheme('theme-google-nav', this)">🟢 Google Green HUD</button>
+          <button class="btn-toggle" onclick="setTheme('theme-google-blue', this)">🔵 Google Blue Nav</button>
+          <button class="btn-toggle" onclick="setTheme('theme-dark', this)">🌌 Cyber Cyan (TYMAP)</button>
+          <button class="btn-toggle" onclick="setTheme('theme-oled', this)">⬛ OLED Mono 1-Bit</button>
+        </div>
+
+        <div class="control-group" style="margin-left: 12px;">
+          <span class="control-label">Kích thước xem:</span>
+          <button class="btn-toggle" onclick="setSize(60, this)">60px</button>
+          <button class="btn-toggle active" onclick="setSize(72, this)">72px (Chuẩn)</button>
+          <button class="btn-toggle" onclick="setSize(84, this)">84px (Lớn)</button>
+        </div>
+      </div>
+    </header>
+    <div class="section-title">1. Hướng Rẽ Cơ Bản (Turns & U-Turns)</div>
+    <div class="icon-grid">
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_straight.xml', 'Đi Thẳng (Straight)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M14.50342,8.96637L11.55157,7.62262A0.35755,0.35755,0,0,0,11.00916,8v9.49652A0.50346,0.50346,0,0,1,10.50568,18h-0.993a0.50346,0.50346,0,0,1-.50348-0.50348V8a0.35756,0.35756,0,0,0-.54242-0.37738L5.51489,8.96637a0.38659,0.38659,0,0,1-.40942-0.62354L10.00916,2l4.90369,6.34283A0.3866,0.3866,0,0,1,14.50342,8.96637Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 0</span>
+          <div class="icon-name">Đi Thẳng (Straight)</div>
+          <div class="icon-desc">Tiếp tục đi thẳng trên tuyến đường hiện tại</div>
+          <div class="icon-file-id">ic_nav_straight.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_turn_right.xml', 'Rẽ Phải 90° (Turn Right)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M9.98877,7.98169A4.05782,4.05782,0,0,0,6,12.05493v5.44885A0.49622,0.49622,0,0,1,5.50378,18H4.49731a0.49614,0.49614,0,0,1-.49615-0.49683L4.00311,16H4V12.05493A6.06019,6.06019,0,0,1,9.989,5.98169L10,5.97986V5.98169h1.98755a0.35757,0.35757,0,0,0,.37738-0.54242L11.02118,2.48743A0.38659,0.38659,0,0,1,11.64471,2.078L17.9917,7l-6.347,4.88544a0.38659,0.38659,0,0,1-.62354-0.40942l1.34375-2.95184a0.3576,0.3576,0,0,0-.37738-0.54248H9.98877Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 2</span>
+          <div class="icon-name">Rẽ Phải 90° (Turn Right)</div>
+          <div class="icon-desc">Rẽ phải tại ngã rẽ vuông góc tiếp theo</div>
+          <div class="icon-file-id">ic_nav_turn_right.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_turn_left.xml', 'Rẽ Trái 90° (Turn Left)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M10,5.97986l0.011,0.00183A6.06019,6.06019,0,0,1,16,12.05493V16H15.99689l0.002,1.50317A0.49614,0.49614,0,0,1,15.50269,18H14.49622A0.49622,0.49622,0,0,1,14,17.50378V12.05493a4.05782,4.05782,0,0,0-3.98877-4.07324H8.01245a0.3576,0.3576,0,0,0-.37738.54248L8.97882,11.476a0.38659,0.38659,0,0,1-.62354.40942L2.0083,7l6.347-4.922a0.38659,0.38659,0,0,1,.62354.40942L7.63507,5.43927a0.35757,0.35757,0,0,0,.37738.54242H10"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 5</span>
+          <div class="icon-name">Rẽ Trái 90° (Turn Left)</div>
+          <div class="icon-desc">Rẽ trái tại ngã rẽ vuông góc tiếp theo</div>
+          <div class="icon-file-id">ic_nav_turn_left.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_slight_right.xml', 'Chếch Phải (Slight Right)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M7.35395,8.24854L9.81141,6.17468a0.3576,0.3576,0,0,0-.07019-0.6571L6.7923,4.16742a0.38658,0.38658,0,0,1,.20294-0.71777L15,3l-1.58044,7.86a0.38663,0.38663,0,0,1-.73938.09912L11.762,7.84851a0.35758,0.35758,0,0,0-.6405-0.16266L8.67328,9.75146a5.21819,5.21819,0,0,0-1.665,4.144l0.0047,3.60767A0.49614,0.49614,0,0,1,6.51679,18H5.51026a0.49621,0.49621,0,0,1-.49615-0.49622V14.043A7.25157,7.25157,0,0,1,7.35395,8.24854Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 1, 16</span>
+          <div class="icon-name">Chếch Phải (Slight Right)</div>
+          <div class="icon-desc">Rẽ nhẹ sang phải hoặc nhập vào nhánh phải</div>
+          <div class="icon-file-id">ic_nav_slight_right.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_slight_left.xml', 'Chếch Trái (Slight Left)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M14.9859,14.043v3.46082A0.49621,0.49621,0,0,1,14.48974,18H13.48321a0.49614,0.49614,0,0,1-.49615-0.49683l0.0047-3.60767a5.21819,5.21819,0,0,0-1.665-4.144L8.87854,7.68585a0.35758,0.35758,0,0,0-.6405.16266l-0.91821,3.1106A0.38663,0.38663,0,0,1,6.58044,10.86L5,3l8.00476,0.44965a0.38658,0.38658,0,0,1,.20294.71777L10.25878,5.51758a0.3576,0.3576,0,0,0-.07019.6571l2.45746,2.07385A7.25158,7.25158,0,0,1,14.9859,14.043Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 4, 15</span>
+          <div class="icon-name">Chếch Trái (Slight Left)</div>
+          <div class="icon-desc">Rẽ nhẹ sang trái hoặc nhập vào nhánh trái</div>
+          <div class="icon-file-id">ic_nav_slight_left.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_sharp_right.xml', 'Rẽ Gắt Phải (Sharp Right)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M3.49789,17.99542a0.49779,0.49779,0,0,1-.49779-0.49781L3.00057,5.02472A2.10247,2.10247,0,0,1,3.5577,3.56427a1.92935,1.92935,0,0,1,1.43408-.56885l0.26416-.002A4.46634,4.46634,0,0,1,8.6407,4.23468L14.0328,8.84377l0.00378-.00446a0.35757,0.35757,0,0,0,.638-0.17206l0.8725-3.12372a0.38661,0.38661,0,0,1,.74072.0882l1.69568,7.836L9.973,13.13564a0.38658,0.38658,0,0,1-.21344-0.71472l2.92877-1.39331a0.34918,0.34918,0,0,0,.08252-0.63177L7.37557,5.783a2.56758,2.56758,0,0,0-2.0957-.79l-0.27979.00635v12.4983a0.49779,0.49779,0,0,1-.49779.49779H3.49789Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 3</span>
+          <div class="icon-name">Rẽ Gắt Phải (Sharp Right)</div>
+          <div class="icon-desc">Cua ngoặt gấp sang phải góc hẹp</div>
+          <div class="icon-file-id">ic_nav_sharp_right.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_sharp_left.xml', 'Rẽ Gắt Trái (Sharp Left)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M15.49771,17.99542a0.49779,0.49779,0,0,1-.49779-0.49779V4.99933L14.72014,4.993a2.56758,2.56758,0,0,0-2.0957.79L7.22917,10.39583a0.34918,0.34918,0,0,0,.08252.63177l2.92877,1.39331a0.38658,0.38658,0,0,1-.21344.71472l-8.0105.33209,1.69568-7.836a0.38661,0.38661,0,0,1,.74072-0.0882l0.8725,3.12372a0.35757,0.35757,0,0,0,.638.17206L5.9672,8.84377,11.3593,4.23468a4.46634,4.46634,0,0,1,3.38477-1.24121l0.26416,0.002a1.92935,1.92935,0,0,1,1.43408.56885,2.10247,2.10247,0,0,1,.55713,1.46045L16.9999,17.49761a0.49779,0.49779,0,0,1-.49779.49781h-1.0044Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 6</span>
+          <div class="icon-name">Rẽ Gắt Trái (Sharp Left)</div>
+          <div class="icon-desc">Cua ngoặt gấp sang trái góc hẹp</div>
+          <div class="icon-file-id">ic_nav_sharp_left.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_uturn.xml', 'Quay Đầu Xe (U-Turn)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M17,8v9.49652A0.50346,0.50346,0,0,1,16.49652,18h-0.993A0.50346,0.50346,0,0,1,15,17.49652V8A3.5,3.5,0,0,0,8,8v4H7.99091a0.35757,0.35757,0,0,0,.54242.37738l2.95184-1.34375a0.3866,0.3866,0,0,1,.40942.62354L6.99091,18,2.08716,11.65717a0.3866,0.3866,0,0,1,.40942-0.62354l2.95184,1.34375A0.3576,0.3576,0,0,0,5.99091,12H6V8A5.5,5.5,0,0,1,17,8Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 7, 8</span>
+          <div class="icon-name">Quay Đầu Xe (U-Turn)</div>
+          <div class="icon-desc">Quay đầu xe tại điểm mở dải phân cách</div>
+          <div class="icon-file-id">ic_nav_uturn.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_uturn_right.xml', 'Tiếp Tục Quay Đầu (Continue U-Turn)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M17.00909,8v9.49652A0.50346,0.50346,0,0,1,16.50562,18h-0.993a0.50346,0.50346,0,0,1-.50348-0.50348V8a3.5,3.5,0,1,0-7,0v4H8a0.35757,0.35757,0,0,0,.54242.37738l2.95184-1.34375a0.3866,0.3866,0,0,1,.40942.62354L7,18,2.09625,11.65717a0.3866,0.3866,0,0,1,.40942-0.62354l2.95184,1.34375A0.3576,0.3576,0,0,0,6,12H6.00909V8A5.5,5.5,0,1,1,17.00909,8Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 8</span>
+          <div class="icon-name">Tiếp Tục Quay Đầu (Continue U-Turn)</div>
+          <div class="icon-desc">Quay đầu xe và tiếp tục hành trình</div>
+          <div class="icon-file-id">ic_nav_uturn_right.xml</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">2. Vòng Xuyến & Bùng Binh (Roundabouts & Rotaries)</div>
+    <div class="icon-grid">
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_roundabout.xml', 'Bùng Binh Chung (Roundabout)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+            <path fill="currentColor" d="M5.5,10.002a0.17879,0.17879,0,0,0,.27124.18866l1.47589-.67188a0.1933,0.1933,0,0,1,.20471.31177L5,13.002,2.54816,9.83051a0.1933,0.1933,0,0,1,.20471-0.31177l1.476,0.67188A0.17876,0.17876,0,0,0,4.5,10.002V10A5.51888,5.51888,0,0,1,7.25293,5.23437l0.5,0.86523A4.51856,4.51856,0,0,0,5.5,10v0.002Zm6.75146-3.89941A4.51948,4.51948,0,0,1,14.5,10h1a5.5223,5.5223,0,0,0-2.74756-4.7627L12.751,5.23724A0.17878,0.17878,0,0,1,12.72321,4.908L14.043,3.96576a0.19332,0.19332,0,0,0-.16766-0.33319l-3.97247.53766,1.52063,3.70911a0.19331,0.19331,0,0,0,.37238-0.02142L11.952,6.24377A0.17945,0.17945,0,0,1,12.25146,6.10254ZM12.74688,14.766a0.17879,0.17879,0,0,1,.299.14053l0.1561,1.61412a0.1933,0.1933,0,0,0,.37235.02141L15.095,12.833l-3.97245-.53766a0.1933,0.1933,0,0,0-.16764.33317l1.31982,0.94225a0.17879,0.17879,0,0,1-.02781.32923l0.00361-.00254a4.57684,4.57684,0,0,1-4.502,0l-0.501.86523a5.50442,5.50442,0,0,0,5.50391,0Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 12, 13</span>
+          <div class="icon-name">Bùng Binh Chung (Roundabout)</div>
+          <div class="icon-desc">Tiến vào bùng binh / vòng xoay giao thông (3 mũi tên khuyên xoay tròn)</div>
+          <div class="icon-file-id">ic_nav_roundabout.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_roundabout_1.xml', 'Vòng Xuyến: Lối Ra 1 (Exit Right 90°)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+            <path fill="currentColor" d="M7,6.2A3.8,3.8,0,1,1,3.2,10,3.80428,3.80428,0,0,1,7,6.2m0,7A3.2,3.2,0,1,0,3.8,10,3.20363,3.20363,0,0,0,7,13.2M7,6a4,4,0,1,0,4,4A4.00458,4.00458,0,0,0,7,6H7Zm0,7a3,3,0,1,1,3-3,3.00328,3.00328,0,0,1-3,3H7Zm7.83777-5.45184a0.1933,0.1933,0,0,0-.31177.20471l0.67188,1.47589A0.17881,0.17881,0,0,1,15.00916,9.5H10V10a2.99994,2.99994,0,0,1-3,3H6.5v4h1V13.96924A4.0032,4.0032,0,0,0,10.96924,10.5h4.03992a0.17881,0.17881,0,0,1,.18872.27124L14.526,12.24713a0.1933,0.1933,0,0,0,.31177.20471L18.00916,10Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 9</span>
+          <div class="icon-name">Vòng Xuyến: Lối Ra 1 (Exit Right 90°)</div>
+          <div class="icon-desc">Vào vòng xuyến và rẽ phải ở lối ra thứ 1 (chuẩn Mapbox roundabout_right)</div>
+          <div class="icon-file-id">ic_nav_roundabout_1.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_roundabout_slight_right.xml', 'Vòng Xuyến: Lối Ra 1 (Exit Slight Right 45°)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+            <path fill="currentColor" d="M8.97128,7.2a3.8,3.8,0,1,1-3.8,3.8,3.80428,3.80428,0,0,1,3.8-3.8m0,7a3.2,3.2,0,1,0-3.2-3.2,3.20363,3.20363,0,0,0,3.2,3.2m0-7.2a4,4,0,1,0,4,4,4.00458,4.00458,0,0,0-4-4h0Zm0,7a3,3,0,1,1,3-3,3.00328,3.00328,0,0,1-3,3h0ZM13.05247,3.45127a0.19328,0.19328,0,0,0-.07568.36517l1.51874,0.5686a0.17878,0.17878,0,0,1,.05835.3252l0.00006,0.00006L10.73885,8.52539l0.35352,0.35352A2.99976,2.99976,0,0,1,8.97127,14h-0.5v3.97917h1V14.96924a4.00123,4.00123,0,0,0,2.66016-6.42236L15.261,5.41734a0.17878,0.17878,0,0,1,.3252.05835L16.1547,6.99443a0.19332,0.19332,0,0,0,.36523-0.07574l0.50879-3.9762Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 21</span>
+          <div class="icon-name">Vòng Xuyến: Chếch Phải 45°</div>
+          <div class="icon-desc">Vào vòng xuyến và chếch phải lối ra thứ 1 (roundabout_slight_right)</div>
+          <div class="icon-file-id">ic_nav_roundabout_slight_right.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_roundabout_2.xml', 'Vòng Xuyến: Lối Ra 2 (Exit Straight)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+            <path fill="currentColor" d="M10,8.2A3.8,3.8,0,1,1,6.2,12,3.80427,3.80427,0,0,1,10,8.2m0,7A3.2,3.2,0,1,0,6.8,12,3.20363,3.20363,0,0,0,10,15.2M10,8a4,4,0,1,0,4,4,4.00458,4.00458,0,0,0-4-4h0Zm0,7a3,3,0,1,1,3-3,3.00328,3.00328,0,0,1-3,3h0Zm2.83057-5.82666A3.97135,3.97135,0,0,0,10.5,8.03076V5.00415a0.17881,0.17881,0,0,1,.27124-0.18872L12.24713,5.4873a0.19329,0.19329,0,0,0,.20471-0.31177L10,2.00415,7.54816,5.17554a0.1933,0.1933,0,0,0,.20471.31177l1.476-.67187A0.17879,0.17879,0,0,1,9.5,5.00415V9H10a3,3,0,1,1,0,6H9.5v3h1V15.96924A4.00076,4.00076,0,0,0,12.83057,9.17334Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 10</span>
+          <div class="icon-name">Vòng Xuyến: Lối Ra 2 (Exit Straight)</div>
+          <div class="icon-desc">Vào vòng xuyến và đi thẳng xuyên tâm qua lối số 2 (roundabout_straight)</div>
+          <div class="icon-file-id">ic_nav_roundabout_2.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_roundabout_3.xml', 'Vòng Xuyến: Lối Ra 3 (Exit Left 90°)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+            <path fill="currentColor" d="M13,6.2A3.8,3.8,0,1,1,9.2,10,3.80428,3.80428,0,0,1,13,6.2m0,7A3.2,3.2,0,1,0,9.8,10,3.20363,3.20363,0,0,0,13,13.2M13,6a4,4,0,1,0,4,4,4.00458,4.00458,0,0,0-4-4h0Zm0,7a3,3,0,1,1,3-3,3.00328,3.00328,0,0,1-3,3h0Zm2.82861-5.82813a4.0315,4.0315,0,0,0-.542-0.45459,4.078,4.078,0,0,0-5.11475.4541A3.96842,3.96842,0,0,0,9.03076,9.5H5a0.17879,0.17879,0,0,1-.18866-0.27124L5.48322,7.75287a0.1933,0.1933,0,0,0-.31177-0.20471L2,10l3.17145,2.45184a0.1933,0.1933,0,0,0,.31177-0.20471L4.81134,10.77124A0.17879,0.17879,0,0,1,5,10.5h5V10a2.98063,2.98063,0,0,1,.87891-2.12158,3.06088,3.06088,0,0,1,3.83545-.34082,3.02248,3.02248,0,0,1,.40723.34131A2.99976,2.99976,0,0,1,13,13H12.5v4h1V13.96924A4.00038,4.00038,0,0,0,15.82861,7.17187Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 11</span>
+          <div class="icon-name">Vòng Xuyến: Lối Ra 3 (Exit Left 90°)</div>
+          <div class="icon-desc">Vào vòng xuyến và rẽ trái ở lối ra thứ 3 (roundabout_left)</div>
+          <div class="icon-file-id">ic_nav_roundabout_3.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('roundabout_sharp_left.xml', 'Vòng Xuyến: Lối Ra 4 (Exit Sharp Left)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M10.994,5.2A3.8,3.8,0,1,1,7.194,9a3.80428,3.80428,0,0,1,3.8-3.8m0,7A3.2,3.2,0,1,0,7.794,9a3.20363,3.20363,0,0,0,3.2,3.2m0-7.2a4,4,0,1,0,4,4,4.00458,4.00458,0,0,0-4-4h0Zm0,7a3,3,0,1,1,3-3,3.00328,3.00328,0,0,1-3,3h0Zm2.8291-5.82813a4.03583,4.03583,0,0,0-.54248-0.45459,4.07906,4.07906,0,0,0-5.11475.4541,4.00058,4.00058,0,0,0-.33252,5.28076L4.76758,14.51792a0.17873,0.17873,0,0,1-.325-0.05847L3.874,12.94071a0.19332,0.19332,0,0,0-.36523.07568L3,16.99265l3.97626-.50879a0.19332,0.19332,0,0,0,.07568-0.36523L5.5332,15.55008a0.17879,0.17879,0,0,1-.05835-0.3252l-0.00037-.00037,3.40378-3.40567,0.33838-.353-0.34521-.34619A2.9995,2.9995,0,0,1,8.8729,6.87842a3.06063,3.06063,0,0,1,3.83545-.34082,3.02673,3.02673,0,0,1,.40771.34131A3,3,0,0,1,10.994,12h-0.5v4h1V12.96924A4.00076,4.00076,0,0,0,13.82309,6.17187Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 26</span>
+          <div class="icon-name">Vòng Xuyến: Lối Ra 4 (Exit Sharp Left)</div>
+          <div class="icon-desc">Ôm gần trọn vòng xuyến để quay ngược lại</div>
+          <div class="icon-file-id">roundabout_sharp_left.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('rotary.xml', 'Đảo Giao Thông Lớn (Rotary)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M5.5,10.002a0.17879,0.17879,0,0,0,.27124.18866l1.47589-.67187a0.1933,0.1933,0,0,1,.20471.31177L5,13.002,2.54816,9.83051a0.1933,0.1933,0,0,1,.20471-0.31177l1.476,0.67187A0.17876,0.17876,0,0,0,4.5,10.002V10A5.51888,5.51888,0,0,1,7.25293,5.23438l0.5,0.86523A4.51856,4.51856,0,0,0,5.5,10v0.002Zm6.75146-3.89941A4.51948,4.51948,0,0,1,14.5,10h1a5.5223,5.5223,0,0,0-2.74756-4.7627L12.751,5.23724A0.17878,0.17878,0,0,1,12.72321,4.908L14.043,3.96576a0.19332,0.19332,0,0,0-.16766-0.33319l-3.97247.53766,1.52063,3.70911a0.19331,0.19331,0,0,0,.37238-0.02142L11.952,6.24377A0.17945,0.17945,0,0,1,12.25146,6.10254ZM12.74688,14.766a0.17879,0.17879,0,0,1,.299.14053l0.1561,1.61412a0.1933,0.1933,0,0,0,.37235.02141L15.095,12.833l-3.97245-.53766a0.1933,0.1933,0,0,0-.16764.33317l1.31982,0.94225a0.17879,0.17879,0,0,1-.02781.32923l0.00361-.00254a4.57684,4.57684,0,0,1-4.502,0l-0.501.86523a5.50442,5.50442,0,0,0,5.50391,0Z" />
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 13</span>
+          <div class="icon-name">Đảo Giao Thông Lớn (Rotary)</div>
+          <div class="icon-desc">Lưu thông qua đảo giao thông phân luồng lớn</div>
+          <div class="icon-file-id">rotary.xml</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">3. Cao Tốc, Lối Thoát & Giữ Làn (Highway, Fork & Ramp)</div>
+    <div class="icon-grid">
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_keep_right.xml', 'Giữ Làn Phải (Fork Right)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M2.27386,6.57682A0.30457,0.30457,0,0,1,2.47,6.64864L4.544,8.39882A7.00218,7.00218,0,0,1,6.81586,14.043v3.46088A0.29651,0.29651,0,0,1,6.51968,17.8H5.51318A0.29613,0.29613,0,0,1,5.217,17.50343L5.22079,13.9146a5.42,5.42,0,0,0-1.73517-4.316L1.42825,7.86274a0.30461,0.30461,0,0,1-.03372-0.43226l0.649-.74859a0.30466,0.30466,0,0,1,.23035-0.10507m0-.2a0.50345,0.50345,0,0,0-.38147.17406l-0.649.74859a0.50458,0.50458,0,0,0,.05588.71613L3.35666,9.75146a5.2182,5.2182,0,0,1,1.665,4.14405L5.017,17.50317A0.49617,0.49617,0,0,0,5.51318,18h1.0065a0.49616,0.49616,0,0,0,.49615-0.49615V14.043A7.25157,7.25157,0,0,0,4.676,8.24854L2.599,6.49579a0.50264,0.50264,0,0,0-.32516-0.119h0ZM11.0083,7.98169h1.98755a0.3576,0.3576,0,0,1,.37738.54248L12.02948,11.476a0.38659,0.38659,0,0,0,.62354.40942L19,7,12.653,2.078a0.38659,0.38659,0,0,0-.62354.40942l1.34375,2.95184a0.35757,0.35757,0,0,1-.37738.54242H11.0083V5.97986l-0.011.00183a6.06019,6.06019,0,0,0-5.989,6.07324V16H5.01141l-0.002,1.50317A0.49614,0.49614,0,0,0,5.50562,18H6.51208a0.49622,0.49622,0,0,0,.49622-0.49622V12.05493a4.05782,4.05782,0,0,1,3.98877-4.07324H11.0083Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 18</span>
+          <div class="icon-name">Giữ Làn Phải (Fork Right)</div>
+          <div class="icon-desc">Đi theo nhánh bên phải tại đoạn phân tách làn</div>
+          <div class="icon-file-id">ic_nav_keep_right.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_keep_left.xml', 'Giữ Làn Trái (Fork Left)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M17.73611,6.57682a0.30465,0.30465,0,0,1,.23032.10507l0.649,0.74859a0.30457,0.30457,0,0,1-.03369.43226L16.5213,9.60119a5.4089,5.4089,0,0,0-1.73306,4.29459l0.0047,3.60769A0.29612,0.29612,0,0,1,14.4968,17.8H13.49033a0.29657,0.29657,0,0,1-.29623-0.29622l-0.00058-3.47624A6.99129,6.99129,0,0,1,15.463,8.40138l2.077-1.75275a0.30475,0.30475,0,0,1,.1962-0.07182m0-.2a0.50269,0.50269,0,0,0-.32516.119L15.334,8.24854A7.25157,7.25157,0,0,0,12.99411,14.043v3.46082A0.49622,0.49622,0,0,0,13.49033,18H14.4968a0.49614,0.49614,0,0,0,.49615-0.49681l-0.0047-3.60767a5.2182,5.2182,0,0,1,1.665-4.14405L18.71066,8.0156a0.50455,0.50455,0,0,0,.05585-0.71613l-0.649-.74859a0.50345,0.50345,0,0,0-.38147-0.17406h0ZM9.00078,5.98169H7.01323a0.35757,0.35757,0,0,1-.37738-0.54242L7.9796,2.48743A0.38659,0.38659,0,0,0,7.35606,2.078L1.00908,7l6.347,4.88544A0.38659,0.38659,0,0,0,7.9796,11.476L6.63585,8.52417a0.3576,0.3576,0,0,1,.37738-0.54248H9.012a4.05782,4.05782,0,0,1,3.98877,4.07324v5.44885A0.49622,0.49622,0,0,0,13.497,18h1.00647a0.49614,0.49614,0,0,0,.49615-0.49683L14.99766,16h0.00311V12.05493a6.06019,6.06019,0,0,0-5.989-6.07324l-0.011-.00183"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 19</span>
+          <div class="icon-name">Giữ Làn Trái (Fork Left)</div>
+          <div class="icon-desc">Đi theo nhánh bên trái tại đoạn phân tách làn</div>
+          <div class="icon-file-id">ic_nav_keep_left.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('fork_straight.xml', 'Giữ Làn Giữa (Fork Straight)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M17.75607,6.59766a0.30466,0.30466,0,0,1,.23035.10507l0.649,0.74859a0.30457,0.30457,0,0,1-.03369.43226L16.54129,9.622a5.4089,5.4089,0,0,0-1.73306,4.29459l0.0047,3.60769a0.29613,0.29613,0,0,1-.29614.29654H13.51031a0.29657,0.29657,0,0,1-.29623-0.29622L13.2135,14.04838a6.99129,6.99129,0,0,1,2.26944-5.62616l2.077-1.75275a0.30461,0.30461,0,0,1,.19617-0.07182m0-.2a0.50264,0.50264,0,0,0-.32516.119l-2.077,1.75275A7.25157,7.25157,0,0,0,13.0141,14.0638v3.46082a0.49622,0.49622,0,0,0,.49622.49622h1.00647a0.49616,0.49616,0,0,0,.49615-0.49681l-0.0047-3.60767a5.2182,5.2182,0,0,1,1.665-4.14405l2.05737-1.73586A0.50455,0.50455,0,0,0,18.7865,7.3203l-0.649-.74859a0.50345,0.50345,0,0,0-.38147-0.17406h0ZM2.24393,6.57682a0.30457,0.30457,0,0,1,.19617.07182l2.074,1.75018A7.00218,7.00218,0,0,1,6.78592,14.043v3.46088A0.29651,0.29651,0,0,1,6.48975,17.8H5.48322a0.29613,0.29613,0,0,1-.29614-0.29655L5.19086,13.9146a5.42,5.42,0,0,0-1.73517-4.316L1.39832,7.86274a0.30457,0.30457,0,0,1-.03369-0.43226l0.649-.74859a0.30466,0.30466,0,0,1,.23035-0.10507m0-.2a0.50345,0.50345,0,0,0-.38147.17406l-0.649.74859a0.50455,0.50455,0,0,0,.05585.71613L3.32672,9.75146a5.2182,5.2182,0,0,1,1.665,4.14405l-0.0047,3.60767A0.49616,0.49616,0,0,0,5.48322,18H6.48975a0.49616,0.49616,0,0,0,.49615-0.49615V14.043A7.25157,7.25157,0,0,0,4.64606,8.24854l-2.077-1.75275a0.50264,0.50264,0,0,0-.32516-0.119h0Zm12.66891,1.966L10.00916,2,5.10547,8.34283a0.38659,0.38659,0,0,0,.40942.62354L8.46674,7.62262A0.35756,0.35756,0,0,1,9.00916,8v9.49652A0.50346,0.50346,0,0,0,9.51263,18h0.993a0.50346,0.50346,0,0,0,.50348-0.50348V8a0.35755,0.35755,0,0,1,.54242-0.37738l2.95184,1.34375A0.3866,0.3866,0,0,0,14.91284,8.34283Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 23</span>
+          <div class="icon-name">Giữ Làn Giữa (Fork Straight)</div>
+          <div class="icon-desc">Giữ làn chính giữa tại điểm phân luồng 3 nhánh</div>
+          <div class="icon-file-id">fork_straight.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_off_ramp.xml', 'Lối Thoát Cao Tốc Phải (Off-Ramp Right)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M6.5029,2.2A0.29744,0.29744,0,0,1,6.8,2.49712V17.50288A0.29744,0.29744,0,0,1,6.5029,17.8H5.4971A0.29744,0.29744,0,0,1,5.2,17.50288V2.49712A0.29744,0.29744,0,0,1,5.4971,2.2H6.5029m0-.2H5.4971A0.49711,0.49711,0,0,0,5,2.49712V17.50288A0.49711,0.49711,0,0,0,5.4971,18H6.5029A0.49711,0.49711,0,0,0,7,17.50288V2.49712A0.49711,0.49711,0,0,0,6.5029,2h0Zm4.5054,5.98169h1.98755a0.3576,0.3576,0,0,1,.37738.54248L12.02948,11.476a0.38659,0.38659,0,0,0,.62354.40942L19,7,12.653,2.078a0.38659,0.38659,0,0,0-.62354.40942l1.34375,2.95184a0.35757,0.35757,0,0,1-.37738.54242H11.0083V5.97986l-0.011.00183a6.06019,6.06019,0,0,0-5.989,6.07324V16H5.01141l-0.002,1.50317A0.49614,0.49614,0,0,0,5.50562,18H6.51208a0.49622,0.49622,0,0,0,.49622-0.49622V12.05493a4.05782,4.05782,0,0,1,3.98877-4.07324H11.0083Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 20</span>
+          <div class="icon-name">Lối Thoát Cao Tốc Phải (Off-Ramp Right)</div>
+          <div class="icon-desc">Rẽ vào nhánh thoát cao tốc hoặc đường gom bên phải</div>
+          <div class="icon-file-id">ic_nav_off_ramp.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('off_ramp_left.xml', 'Lối Thoát Cao Tốc Trái (Off-Ramp Left)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M14.5029,2.2A0.29744,0.29744,0,0,1,14.8,2.49712V17.50288A0.29744,0.29744,0,0,1,14.5029,17.8H13.4971A0.29744,0.29744,0,0,1,13.2,17.50288V2.49712A0.29744,0.29744,0,0,1,13.4971,2.2h1.0058m0-.2H13.4971A0.49711,0.49711,0,0,0,13,2.49712V17.50288A0.49711,0.49711,0,0,0,13.4971,18h1.0058A0.49711,0.49711,0,0,0,15,17.50288V2.49712A0.49711,0.49711,0,0,0,14.5029,2h0ZM9.00078,5.98169H7.01323a0.35757,0.35757,0,0,1-.37738-0.54242L7.9796,2.48743A0.38659,0.38659,0,0,0,7.35606,2.078L1.00908,7l6.347,4.88544A0.38659,0.38659,0,0,0,7.9796,11.476L6.63585,8.52417a0.3576,0.3576,0,0,1,.37738-0.54248H9.012a4.05782,4.05782,0,0,1,3.98877,4.07324v5.44885A0.49622,0.49622,0,0,0,13.497,18h1.00647a0.49614,0.49614,0,0,0,.49615-0.49683L14.99766,16h0.00311V12.05493a6.06019,6.06019,0,0,0-5.989-6.07324l-0.011-.00183"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 21</span>
+          <div class="icon-name">Lối Thoát Cao Tốc Trái (Off-Ramp Left)</div>
+          <div class="icon-desc">Rẽ vào nhánh thoát cao tốc bên trái</div>
+          <div class="icon-file-id">off_ramp_left.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('on_ramp_right.xml', 'Lối Vào Cao Tốc (On-Ramp)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M10.99707,7.98169A4.05782,4.05782,0,0,0,7.0083,12.05493v5.44885A0.49622,0.49622,0,0,1,6.51208,18H5.50562a0.49614,0.49614,0,0,1-.49615-0.49683L5.01141,16H5.0083V12.05493a6.06019,6.06019,0,0,1,5.989-6.07324l0.011-.00183V5.98169h1.98755a0.35757,0.35757,0,0,0,.37738-0.54242L12.02948,2.48743A0.38659,0.38659,0,0,1,12.653,2.078L19,7l-6.347,4.88544a0.38659,0.38659,0,0,1-.62354-0.40942l1.34375-2.95184a0.3576,0.3576,0,0,0-.37738-0.54248H10.99707Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 24</span>
+          <div class="icon-name">Lối Vào Cao Tốc (On-Ramp)</div>
+          <div class="icon-desc">Đi vào đường dẫn nhập làn cao tốc</div>
+          <div class="icon-file-id">on_ramp_right.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('merge_right.xml', 'Nhập Làn Phải (Merge Right)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M13.8,7.2V17.49921a0.30112,0.30112,0,0,1-.30078.3008H12.50079A0.30112,0.30112,0,0,1,12.2,17.49921V7.2h1.6M14,7H12V17.49921A0.50079,0.50079,0,0,0,12.50079,18h0.99841A0.50079,0.50079,0,0,0,14,17.49921V7h0Zm0.01831,3V8.01245a0.35757,0.35757,0,0,1,.54242-0.37738l2.95184,1.34375A0.38659,0.38659,0,0,0,17.922,8.35529L13,2.0083l-4.88544,6.347a0.38659,0.38659,0,0,0,.40942.62354l2.95184-1.34375a0.3576,0.3576,0,0,1,.54248.37738v1.99878A4.05782,4.05782,0,0,1,7.94507,14H2.49622A0.49622,0.49622,0,0,0,2,14.49622v1.00647a0.49614,0.49614,0,0,0,.49683.49615L4,15.99689V16H7.94507a6.06019,6.06019,0,0,0,6.07324-5.989L14.02014,10"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 16</span>
+          <div class="icon-name">Nhập Làn Phải (Merge Right)</div>
+          <div class="icon-desc">Nhập làn xe di chuyển từ bên phải vào làn chính</div>
+          <div class="icon-file-id">merge_right.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('merge_left.xml', 'Nhập Làn Trái (Merge Left)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M7.8,7.2V17.50252A0.2978,0.2978,0,0,1,7.50253,17.8H6.49747A0.2978,0.2978,0,0,1,6.2,17.50252V7.2H7.8M8,7H6V17.50252A0.49747,0.49747,0,0,0,6.49747,18H7.50253A0.49747,0.49747,0,0,0,8,17.50252V7H8ZM7.98169,10V8.01245a0.3576,0.3576,0,0,1,.54248-0.37738L11.476,8.97882a0.38659,0.38659,0,0,0,.40942-0.62354L7,2.0083l-4.922,6.347a0.38659,0.38659,0,0,0,.40942.62354L5.43927,7.63507a0.35757,0.35757,0,0,1,.54242.37738V10H5.97986l0.00183,0.011A6.06019,6.06019,0,0,0,12.05493,16H16V15.99689l1.50317,0.002A0.49614,0.49614,0,0,0,18,15.50269V14.49622A0.49622,0.49622,0,0,0,17.50378,14H12.05493a4.05782,4.05782,0,0,1-4.07324-3.98877V10Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 15</span>
+          <div class="icon-name">Nhập Làn Trái (Merge Left)</div>
+          <div class="icon-desc">Nhập làn xe di chuyển từ bên trái vào làn chính</div>
+          <div class="icon-file-id">merge_left.xml</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">4. Khởi Hành & Đến Đích (Depart & Arrive)</div>
+    <div class="icon-grid">
+
+      <div class="icon-card" onclick="selectIcon('depart.xml', 'Khởi Hành (Depart)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M9.98172,19a2,2,0,1,1,2-2A2,2,0,0,1,9.98172,19ZM14.89456,7.34283L9.99087,1,5.08719,7.34283a0.38659,0.38659,0,0,0,.40942.62354L8.44845,6.62262a0.35542,0.35542,0,0,1,.541.36908H8.98172v5.50006a0.49992,0.49992,0,0,0,.49994.49994h1.00012a0.49992,0.49992,0,0,0,.49994-0.49994V7h0.00916a0.35757,0.35757,0,0,1,.54242-0.37738l2.95184,1.34375A0.3866,0.3866,0,0,0,14.89456,7.34283Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 0</span>
+          <div class="icon-name">Khởi Hành (Depart)</div>
+          <div class="icon-desc">Bắt đầu chuyến đi theo hướng chỉ định</div>
+          <div class="icon-file-id">depart.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('ic_nav_arrive.xml', 'Đến Đích (Arrive)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M10,5a2,2,0,1,1,2-2A2,2,0,0,1,10,5Zm4.91284,8.35114L10.00916,7.0083,5.10547,13.35114a0.38659,0.38659,0,0,0,.40942.62354l2.95184-1.34375A0.35542,0.35542,0,0,1,9.00769,13H9v5.50006A0.49992,0.49992,0,0,0,9.49994,19h1.00012A0.49992,0.49992,0,0,0,11,18.50006V13.0083h0.00916a0.35757,0.35757,0,0,1,.54242-0.37738l2.95184,1.34375A0.3866,0.3866,0,0,0,14.91284,13.35114Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 14</span>
+          <div class="icon-name">Đến Đích (Arrive)</div>
+          <div class="icon-desc">Bạn đã đến điểm đích đến</div>
+          <div class="icon-file-id">ic_nav_arrive.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('arrive_right.xml', 'Đích Bên Phải (Arrive Right)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M15,10a2,2,0,1,1,2,2A2,2,0,0,1,15,10ZM7,11.05493H8V11.04584a0.35757,0.35757,0,0,1,.37738.54242L7.03363,14.5401a0.3866,0.3866,0,0,0,.62354.40942L14,10.04584,7.65717,5.14215a0.38659,0.38659,0,0,0-.62354.40942L8.37738,8.50342A0.35757,0.35757,0,0,1,8,9.04584V9.05493H7.00818L7.0083,9.03485l-0.011.00183A6.05607,6.05607,0,0,0,1.01385,15H1v1.48767A0.51232,0.51232,0,0,0,1.51233,17H2.48767A0.51232,0.51232,0,0,0,3,16.48767V15.10992H3.0083a4.05782,4.05782,0,0,1,3.98877-4.07324"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 14</span>
+          <div class="icon-name">Đích Bên Phải (Arrive Right)</div>
+          <div class="icon-desc">Điểm đến của bạn nằm ở phía bên phải đường</div>
+          <div class="icon-file-id">arrive_right.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('arrive_left.xml', 'Đích Bên Trái (Arrive Left)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M3,12a2,2,0,1,1,2-2A2,2,0,0,1,3,12Zm10.00293-.96332a4.05782,4.05782,0,0,1,3.98877,4.07324H17v1.37775A0.51232,0.51232,0,0,0,17.51233,17h0.97534A0.51232,0.51232,0,0,0,19,16.48767V15H18.98615a6.05607,6.05607,0,0,0-5.9834-5.96332l-0.011-.00183,0.00012,0.02008H12V9.04584a0.35757,0.35757,0,0,1-.37738-0.54242l1.34375-2.95184a0.38659,0.38659,0,0,0-.62354-0.40942L6,10.04584l6.34283,4.90369a0.3866,0.3866,0,0,0,.62354-0.40942l-1.34375-2.95184A0.35757,0.35757,0,0,1,12,11.04584v0.00909h1"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 14</span>
+          <div class="icon-name">Đích Bên Trái (Arrive Left)</div>
+          <div class="icon-desc">Điểm đến của bạn nằm ở phía bên trái đường</div>
+          <div class="icon-file-id">arrive_left.xml</div>
+        </div>
+      </div>
+
+      <div class="icon-card" onclick="selectIcon('flag.xml', 'Cờ Đích (Destination Flag)')">
+        <div class="icon-preview-box">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <title>direction</title>
+  <path fill="currentColor" d="M3.5,18h0A0.5,0.5,0,0,1,3,17.5V3.5A0.5,0.5,0,0,1,3.5,3h0a0.5,0.5,0,0,1,.5.5v14A0.5,0.5,0,0,1,3.5,18ZM13.33333,7L17,3H6v8H17Z"/>
+          </svg>
+        </div>
+        <div class="icon-info">
+          <span class="icon-code-tag">CODE: 14</span>
+          <div class="icon-name">Cờ Đích (Destination Flag)</div>
+          <div class="icon-desc">Cờ đánh dấu kết thúc hành trình</div>
+          <div class="icon-file-id">flag.xml</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- OLED HARDWARE PREVIEW -->
+    <div class="oled-simulation-card">
+      <div style="text-align: center;">
+        <span class="badge" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #F8FAFC;">
+          ESP32 HARDWARE PREVIEW
+        </span>
+        <h2 style="font-size: 24px; font-weight: 800; margin-top: 8px;">Mô phỏng hiển thị màn hình OLED Tdriver (128x64)</h2>
+        <p style="font-size: 14px; color: var(--text-secondary); max-width: 600px; margin: 6px auto 0;">
+          Bộ vector chính thức của Mapbox Directions Icons có tính đối xứng và pixel-alignment hoàn hảo, đảm bảo khi rasterize lên màn hình OLED xe máy 128x64 sẽ hiển thị sắc nét 100%, không bị gai nét hay xô lệch.
+        </p>
+      </div>
+
+      <div class="oled-screen-mockup">
+        <div class="oled-icon-slot" id="oledCurrentIcon">
+          <svg viewBox="0 0 20 20" width="72" height="72">
+            <!-- Default turn right -->
+            <path fill="#FFFFFF" d="M9.98877,7.98169A4.05782,4.05782,0,0,0,6,12.05493v5.44885A0.49622,0.49622,0,0,1,5.50378,18H4.49731a0.49614,0.49614,0,0,1-.49615-0.49683L4.00311,16H4V12.05493A6.06019,6.06019,0,0,1,9.989,5.98169L10,5.97986V5.98169h1.98755a0.35757,0.35757,0,0,0,.37738-0.54242L11.02118,2.48743A0.38659,0.38659,0,0,1,11.64471,2.078L17.9917,7l-6.347,4.88544a0.38659,0.38659,0,0,1-.62354-0.40942l1.34375-2.95184a0.3576,0.3576,0,0,0-.37738-0.54248H9.98877Z"/>
+          </svg>
+        </div>
+        <div class="oled-nav-info">
+          <div class="oled-dist">150 <span style="font-size: 14px; font-weight: 600;">m</span></div>
+          <div class="oled-street">RẼ PHẢI VÀO ĐƯỜNG NGUYỄN TRÃI</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toastMessage">Đã chọn Icon!</div>
+
+  <script>
+    function setTheme(themeClass, btn) {
+      document.body.className = themeClass;
+      document.querySelectorAll('.controls .control-group:first-child .btn-toggle').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function setSize(sizePx, btn) {
+      document.querySelectorAll('.icon-preview-box svg').forEach(svg => {
+        svg.setAttribute('width', sizePx);
+        svg.setAttribute('height', sizePx);
+      });
+      document.querySelectorAll('.controls .control-group:last-child .btn-toggle').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function selectIcon(iconName, friendlyTitle) {
+      navigator.clipboard.writeText(iconName);
+      const toast = document.getElementById('toastMessage');
+      toast.innerText = 'Đã chọn: ' + iconName + ' (Đã cập nhật OLED preview)';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+
+      const clickedCard = event.currentTarget;
+      const svgContent = clickedCard.querySelector('.icon-preview-box svg').innerHTML;
+      document.getElementById('oledCurrentIcon').querySelector('svg').innerHTML = svgContent;
+      document.querySelector('.oled-street').innerText = friendlyTitle.toUpperCase() + ' PHÍA TRƯỚC';
+    }
+  </script>
+</body>
+</html>

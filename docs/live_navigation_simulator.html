@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TYMAP Real-World Navigation & Turn-by-Turn Simulation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    :root {
+      --bg-dark: #0B0F19;
+      --card-bg: rgba(19, 27, 46, 0.88);
+      --card-border: rgba(56, 189, 248, 0.2);
+      --accent-cyan: #38BDF8;
+      --accent-green: #22C55E;
+      --accent-red: #EF4444;
+      --accent-yellow: #F59E0B;
+      --text-white: #FFFFFF;
+      --text-gray: #94A3B8;
+      --google-green: #1E8E3E;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-white);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* LEFT / MAIN: MAP VIEW CONTAINER */
+    #mapContainer {
+      flex: 1;
+      height: 100vh;
+      position: relative;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+      background: #111827;
+    }
+
+    /* OVERLAY: TOP NAVIGATION HUD (Chuẩn Google Maps HUD) */
+    .nav-hud-top {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 420px;
+      z-index: 1000;
+      display: flex;
+      gap: 16px;
+      pointer-events: none;
+    }
+
+    .nav-maneuver-card {
+      pointer-events: auto;
+      background: var(--google-green);
+      border-radius: 20px;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(30, 142, 62, 0.3);
+      flex: 1;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .maneuver-icon-box {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .maneuver-icon-box svg {
+      width: 60px;
+      height: 60px;
+      fill: #FFFFFF;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .maneuver-info {
+      flex: 1;
+    }
+
+    .maneuver-dist {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .maneuver-instruction {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.95);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .maneuver-sub {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      margin-top: 2px;
+    }
+
+    /* OVERLAY: SPEEDOMETER WIDGET (Trái bên dưới) */
+    .hud-left-speed {
+      position: absolute;
+      top: 140px;
+      left: 20px;
+      z-index: 1000;
+      background: var(--card-bg);
+      border: 1.2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 12px;
+      width: 106px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      pointer-events: auto;
+    }
+
+    /* Biển tròn giới hạn tốc độ */
+    .sign-speed-limit {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 4.5px solid var(--accent-red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000000;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    .sign-speed-limit.warning {
+      border-color: #DC2626;
+      background: #FEF2F2;
+      animation: pulseAlert 0.8s infinite alternate;
+    }
+
+    @keyframes pulseAlert {
+      from { transform: scale(1); box-shadow: 0 0 10px rgba(220, 38, 38, 0.5); }
+      to { transform: scale(1.08); box-shadow: 0 0 25px rgba(220, 38, 38, 0.9); }
+    }
+
+    .speed-label {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--text-gray);
+      margin-top: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .current-speed-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: #FFFFFF;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* OVERLAY: UPCOMING ALERTS BOX ("SẮP TỚI: Camera...") */
+    .hud-upcoming-box {
+      position: absolute;
+      top: 140px;
+      left: 140px;
+      z-index: 1000;
+      background: var(--card-bg);
+      border: 1.2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 14px 18px;
+      width: 260px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      pointer-events: auto;
+    }
+
+    .upcoming-header {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-gray);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .upcoming-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .upcoming-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .upcoming-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upcoming-text {
+      flex: 1;
+    }
+
+    .upcoming-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.3;
+    }
+
+    .upcoming-dist {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* RIGHT SIDEBAR: CONTROLS & ROUTE STEPS */
+    .sidebar {
+      width: 400px;
+      height: 100vh;
+      background: #0E1424;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      z-index: 1001;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar-header {
+      padding: 24px 20px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-header h2 {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-header p {
+      font-size: 12px;
+      color: var(--text-gray);
+      margin-top: 4px;
+    }
+
+    /* Simulation Control Toolbar */
+    .sim-controls {
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #1E293B;
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      background: #334155;
+    }
+
+    .btn-action.primary {
+      background: var(--accent-cyan);
+      color: #0B0F19;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+
+    .slider-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-gray);
+    }
+
+    .slider-group input {
+      flex: 1;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+    }
+
+    /* Steps List */
+    .steps-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .step-item:hover {
+      background: rgba(56, 189, 248, 0.08);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateX(4px);
+    }
+
+    .step-item.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    }
+
+    .step-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #1E293B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-icon-badge svg {
+      width: 28px;
+      height: 28px;
+      fill: #FFFFFF;
+    }
+
+    .step-details {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .step-meta {
+      font-size: 12px;
+      color: var(--text-gray);
+      margin-top: 2px;
+      display: flex;
+      gap: 8px;
+    }
+
+    /* BOTTOM OLED HARDWARE SIMULATOR */
+    .sidebar-oled {
+      padding: 16px 20px;
+      background: #070A12;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .oled-box {
+      width: 100%;
+      height: 90px;
+      background: #000000;
+      border: 3px solid #1E293B;
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05), 0 0 20px rgba(56, 189, 248, 0.15);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .oled-icon {
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .oled-icon svg {
+      width: 50px;
+      height: 50px;
+      fill: #FFFFFF;
+    }
+
+    .oled-content {
+      flex: 1;
+    }
+
+    .oled-dist-num {
+      font-size: 26px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1;
+    }
+
+    .oled-text-road {
+      font-size: 11px;
+      color: #94A3B8;
+      margin-top: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MAP VIEW CONTAINER -->
+  <div id="mapContainer">
+    <div id="map"></div>
+
+    <!-- TOP NAVIGATION HUD -->
+    <div class="nav-hud-top">
+      <div class="nav-maneuver-card" id="hudManeuverCard">
+        <div class="maneuver-icon-box" id="hudManeuverIcon">
+          <!-- Official Mapbox turn_straight icon (viewBox 0 0 20 20) -->
+          <svg viewBox="0 0 20 20">
+            <path d="M14.50342,8.96637L11.55157,7.62262A0.35755,0.35755,0,0,0,11.00916,8v9.49652A0.50346,0.50346,0,0,1,10.50568,18h-0.993a0.50346,0.50346,0,0,1-.50348-0.50348V8a0.35756,0.35756,0,0,0-.54242-0.37738L5.51489,8.96637a0.38659,0.38659,0,0,1-.40942-0.62354L10.00916,2l4.90369,6.34283A0.3866,0.3866,0,0,1,14.50342,8.96637Z" />
+          </svg>
+        </div>
+        <div class="maneuver-info">
+          <div class="maneuver-dist" id="hudDistance">350 m</div>
+          <div class="maneuver-instruction" id="hudInstruction">Đi thẳng trên Đường Nguyễn Trãi</div>
+          <div class="maneuver-sub" id="hudSubText">Sau đó rẽ phải lên Cầu vượt Ngã Tư Sở</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPEEDOMETER WIDGET -->
+    <div class="hud-left-speed">
+      <div class="sign-speed-limit" id="hudSpeedSign">60</div>
+      <div class="speed-label">TỐC ĐỘ HIỆN TẠI</div>
+      <div class="current-speed-val" id="hudCurrentSpeed">45 <span style="font-size:11px;">km/h</span></div>
+    </div>
+
+    <!-- UPCOMING ALERTS BOX ("SẮP TỚI: Camera...") -->
+    <div class="hud-upcoming-box" id="hudUpcomingBox">
+      <div class="upcoming-header">
+        <span>SẮP TỚI</span>
+        <span style="color:#22C55E;">● Đang cảnh báo</span>
+      </div>
+
+      <!-- Item 1: Camera phạt nguội -->
+      <div class="upcoming-item">
+        <div class="upcoming-icon">
+          <svg viewBox="0 0 36 36" width="28" height="28">
+            <circle cx="18" cy="18" r="15" fill="#FFFFFF" stroke="#DC2626" stroke-width="3" />
+            <path d="M11,14 h3 l2,-3 h4 l2,3 h3 v12 h-14 z" fill="#1E293B" />
+            <circle cx="18" cy="20" r="3.5" fill="#FFFFFF" />
+          </svg>
+        </div>
+        <div class="upcoming-text">
+          <div class="upcoming-title" id="alertTitle1">Camera giao thông</div>
+          <div class="upcoming-dist" id="alertDist1">192 m</div>
+        </div>
+      </div>
+
+      <!-- Item 2: Đèn tín hiệu giao thông -->
+      <div class="upcoming-item">
+        <div class="upcoming-icon">
+          <svg viewBox="0 0 36 36" width="28" height="28">
+            <polygon points="18,3 33,31 3,31" fill="#FEF08A" stroke="#EF4444" stroke-width="2.5" stroke-linejoin="round"/>
+            <rect x="15" y="12" width="6" height="15" rx="2" fill="#1E293B"/>
+            <circle cx="18" cy="15" r="1.8" fill="#EF4444"/>
+            <circle cx="18" cy="19.5" r="1.8" fill="#FBBF24"/>
+            <circle cx="18" cy="24" r="1.8" fill="#22C55E"/>
+          </svg>
+        </div>
+        <div class="upcoming-text">
+          <div class="upcoming-title" id="alertTitle2">Đèn tín hiệu Ngã Tư Sở</div>
+          <div class="upcoming-dist" id="alertDist2">193 m</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR: STEPS & CONTROLS -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>🚀 Mô Phỏng Dẫn Đường Thực Tế</h2>
+      <p>Tuyến đường Nguyễn Trãi ➔ Cầu Vượt Ngã Tư Sở ➔ Trường Chinh (Hà Nội)</p>
+    </div>
+
+    <!-- Toolbar controls -->
+    <div class="sim-controls">
+      <div class="btn-row">
+        <button class="btn-action primary" id="btnPlayPause" onclick="toggleDrive()">▶ Bắt đầu lái</button>
+        <button class="btn-action" onclick="resetDrive()">↺ Đặt lại</button>
+      </div>
+      <div class="slider-group">
+        <span>Tốc độ: <b id="lblSpeed">45</b> km/h</span>
+        <input type="range" id="sliderSpeed" min="20" max="90" value="45" oninput="updateSimSpeed(this.value)">
+      </div>
+    </div>
+
+    <!-- Route Steps List -->
+    <div class="steps-list" id="stepsList">
+      <!-- Steps rendered via JS -->
+    </div>
+
+    <!-- OLED HARDWARE PREVIEW BOX -->
+    <div class="sidebar-oled">
+      <div style="font-size: 11px; font-weight:700; color:var(--text-gray); margin-bottom: 6px;">
+        ESP32 TDRIVER OLED DISPLAY (128x64)
+      </div>
+      <div class="oled-box">
+        <div class="oled-icon" id="oledIcon">
+          <svg viewBox="0 0 20 20">
+            <path d="M14.50342,8.96637L11.55157,7.62262A0.35755,0.35755,0,0,0,11.00916,8v9.49652A0.50346,0.50346,0,0,1,10.50568,18h-0.993a0.50346,0.50346,0,0,1-.50348-0.50348V8a0.35756,0.35756,0,0,0-.54242-0.37738L5.51489,8.96637a0.38659,0.38659,0,0,1-.40942-0.62354L10.00916,2l4.90369,6.34283A0.3866,0.3866,0,0,1,14.50342,8.96637Z" />
+          </svg>
+        </div>
+        <div class="oled-content">
+          <div class="oled-dist-num" id="oledDist">350m</div>
+          <div class="oled-text-road" id="oledRoad">Đ. NGUYỄN TRÃI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    // 1. DATA TUYẾN ĐƯỜNG THỰC TẾ (Hà Nội: Nguyễn Trãi -> Ngã Tư Sở -> Trường Chinh)
+    const routeCoords = [
+      [20.9950, 105.8140], // 0: Nguyễn Trãi (ĐH Hà Nội)
+      [20.9972, 105.8158], // 1: Đi thẳng
+      [20.9995, 105.8175], // 2: Tiến gần nút giao Ngã Tư Sở
+      [21.0018, 105.8190], // 3: Camera giao thông + Đèn tín hiệu
+      [21.0028, 105.8198], // 4: Lên Cầu vượt Ngã Tư Sở
+      [21.0034, 105.8203], // 5: Xuống cầu vượt sang hướng Tây Sơn
+      [21.0042, 105.8212], // 6: Chuẩn bị rẽ phải vào Trường Chinh
+      [21.0050, 105.8225], // 7: Rẽ vào Trường Chinh
+      [21.0065, 105.8245]  // 8: Đến đích Trường Chinh
+    ];
+
+    // Các điểm cảnh báo thực tế trên tuyến đường
+    const cameraPoint = { lat: 21.0018, lng: 105.8190, title: "Camera giao thông", limit: 60 };
+    const lightPoint = { lat: 21.0024, lng: 105.8188, title: "Đèn tín hiệu Ngã Tư Sở" };
+
+    // Danh sách bước rẽ thực tế (Route Steps) - CHUẨN NGUYÊN BẢN MAPBOX DIRECTIONS 20x20
+    const routeSteps = [
+      {
+        index: 0,
+        coordIdx: 0,
+        instruction: "Đi thẳng trên Đường Nguyễn Trãi",
+        subText: "Sau đó rẽ phải lên Cầu vượt Ngã Tư Sở",
+        distance: 750,
+        maneuver: "straight",
+        road: "Đ. NGUYỄN TRÃI",
+        svgPath: "M14.50342,8.96637L11.55157,7.62262A0.35755,0.35755,0,0,0,11.00916,8v9.49652A0.50346,0.50346,0,0,1,10.50568,18h-0.993a0.50346,0.50346,0,0,1-.50348-0.50348V8a0.35756,0.35756,0,0,0-.54242-0.37738L5.51489,8.96637a0.38659,0.38659,0,0,1-.40942-0.62354L10.00916,2l4.90369,6.34283A0.3866,0.3866,0,0,1,14.50342,8.96637Z"
+      },
+      {
+        index: 1,
+        coordIdx: 3,
+        instruction: "Chếch phải lên Cầu vượt Ngã Tư Sở",
+        subText: "Vượt qua nút giao Tây Sơn - Trường Chinh",
+        distance: 380,
+        maneuver: "slight_right",
+        road: "CẦU VƯỢT NTS",
+        svgPath: "M7.35395,8.24854L9.81141,6.17468a0.3576,0.3576,0,0,0-.07019-0.6571L6.7923,4.16742a0.38658,0.38658,0,0,1,.20294-0.71777L15,3l-1.58044,7.86a0.38663,0.38663,0,0,1-.73938.09912L11.762,7.84851a0.35758,0.35758,0,0,0-.6405-0.16266L8.67328,9.75146a5.21819,5.21819,0,0,0-1.665,4.144l0.0047,3.60767A0.49614,0.49614,0,0,1,6.51679,18H5.51026a0.49621,0.49621,0,0,1-.49615-0.49622V14.043A7.25157,7.25157,0,0,1,7.35395,8.24854Z"
+      },
+      {
+        index: 2,
+        coordIdx: 6,
+        instruction: "Rẽ phải vào Đường Trường Chinh",
+        subText: "Đi thẳng tiếp 350m về hướng Đại La",
+        distance: 280,
+        maneuver: "turn_right",
+        road: "Đ. TRƯỜNG CHINH",
+        svgPath: "M9.98877,7.98169A4.05782,4.05782,0,0,0,6,12.05493v5.44885A0.49622,0.49622,0,0,1,5.50378,18H4.49731a0.49614,0.49614,0,0,1-.49615-0.49683L4.00311,16H4V12.05493A6.06019,6.06019,0,0,1,9.989,5.98169L10,5.97986V5.98169h1.98755a0.35757,0.35757,0,0,0,.37738-0.54242L11.02118,2.48743A0.38659,0.38659,0,0,1,11.64471,2.078L17.9917,7l-6.347,4.88544a0.38659,0.38659,0,0,1-.62354-0.40942l1.34375-2.95184a0.3576,0.3576,0,0,0-.37738-0.54248H9.98877Z"
+      },
+      {
+        index: 3,
+        coordIdx: 8,
+        instruction: "Đến điểm đích",
+        subText: "Điểm đến nằm ở phía bên phải đường",
+        distance: 0,
+        maneuver: "arrive",
+        road: "ĐẾN ĐÍCH",
+        svgPath: "M10,5a2,2,0,1,1,2-2A2,2,0,0,1,10,5Zm4.91284,8.35114L10.00916,7.0083,5.10547,13.35114a0.38659,0.38659,0,0,0,.40942.62354l2.95184-1.34375A0.35542,0.35542,0,0,1,9.00769,13H9v5.50006A0.49992,0.49992,0,0,0,9.49994,19h1.00012A0.49992,0.49992,0,0,0,11,18.50006V13.0083h0.00916a0.35757,0.35757,0,0,1,.54242-0.37738l2.95184,1.34375A0.3866,0.3866,0,0,0,14.91284,13.35114Z"
+      }
+    ];
+
+    // 2. KHỞI TẠO BẢN ĐỒ LEAFLET
+    const map = L.map('map', {
+      center: [20.9995, 105.8185],
+      zoom: 16,
+      zoomControl: false
+    });
+
+    // Bản đồ nền tối CartoDB Dark Matter (tôn màu polyline xanh rực rỡ chuẩn Google)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap © CARTO',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map);
+
+    // Vẽ Polyline dẫn đường chuẩn: Nét xanh Google Navigation #1A73E8, bo tròn mượt
+    const routePolyline = L.polyline(routeCoords, {
+      color: '#1A73E8',
+      weight: 8,
+      opacity: 0.95,
+      lineCap: 'round',
+      lineJoin: 'round'
+    }).addTo(map);
+
+    // Viền polyline dưới (Glow / Shadow effect)
+    const routeBorder = L.polyline(routeCoords, {
+      color: '#0D47A1',
+      weight: 12,
+      opacity: 0.35,
+      lineCap: 'round',
+      lineJoin: 'round'
+    }).addTo(map);
+    routeBorder.bringToBack();
+
+    // Icon Marker Camera phạt nguội
+    const camIcon = L.divIcon({
+      html: `
+        <div style="background:#FFFFFF; border:3px solid #DC2626; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.4);">
+          <span style="font-size:16px;">📷</span>
+        </div>
+      `,
+      className: '',
+      iconSize: [34, 34],
+      iconAnchor: [17, 17]
+    });
+    L.marker([cameraPoint.lat, cameraPoint.lng], { icon: camIcon }).addTo(map)
+      .bindPopup("<b>Camera giao thông Ngã Tư Sở</b><br>Phạt nguội vượt tốc độ & đèn đỏ");
+
+    // Icon Marker Đèn tín hiệu
+    const lightIcon = L.divIcon({
+      html: `
+        <div style="background:#1E293B; border:2.5px solid #F59E0B; border-radius:10px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.4);">
+          <span style="font-size:16px;">🚦</span>
+        </div>
+      `,
+      className: '',
+      iconSize: [34, 34],
+      iconAnchor: [17, 17]
+    });
+    L.marker([lightPoint.lat, lightPoint.lng], { icon: lightIcon }).addTo(map)
+      .bindPopup("<b>Cụm đèn tín hiệu Ngã Tư Sở</b>");
+
+    // Marker Xe hơi (Car Location Marker có nón định hướng xoay 360 độ)
+    const carMarkerElement = document.createElement('div');
+    carMarkerElement.innerHTML = `
+      <div id="carIconContainer" style="width:48px; height:48px; display:flex; align-items:center; justify-content:center; transition:transform 0.2s linear;">
+        <svg viewBox="0 0 48 48" width="44" height="44">
+          <!-- Vòng hào quang xanh -->
+          <circle cx="24" cy="24" r="20" fill="rgba(56, 189, 248, 0.25)" />
+          <!-- Thân xe tròn màu xanh Google -->
+          <circle cx="24" cy="24" r="14" fill="#0284C7" stroke="#FFFFFF" stroke-width="3.5" />
+          <!-- Mũi nhọn tam giác chỉ hướng đi -->
+          <polygon points="24,12 30,26 24,23 18,26" fill="#FFFFFF" />
+        </svg>
+      </div>
+    `;
+
+    const carMarker = L.marker(routeCoords[0], {
+      icon: L.divIcon({
+        html: carMarkerElement,
+        className: '',
+        iconSize: [48, 48],
+        iconAnchor: [24, 24]
+      })
+    }).addTo(map);
+
+    // 3. LOGIC SIMULATION DẪN ĐƯỜNG (CHẠY THỜI GIAN THỰC)
+    let isDriving = false;
+    let currentStepIdx = 0;
+    let simProgress = 0; // 0.0 -> routeCoords.length - 1
+    let simSpeedKmh = 45;
+    let animFrame = null;
+
+    function renderStepsList() {
+      const container = document.getElementById('stepsList');
+      container.innerHTML = routeSteps.map((s, idx) => `
+        <div class="step-item ${idx === currentStepIdx ? 'active' : ''}" onclick="jumpToStep(${idx})">
+          <div class="step-icon-badge">
+            <svg viewBox="0 0 20 20">
+              <path d="${s.svgPath}" />
+            </svg>
+          </div>
+          <div class="step-details">
+            <div class="step-title">${s.instruction}</div>
+            <div class="step-meta">
+              <span>${s.distance} m</span>
+              <span>•</span>
+              <span>${s.road}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderStepsList();
+
+    function updateHud(step, remainingDist, carLat, carLng) {
+      // 1. Cập nhật HUD trên đỉnh
+      document.getElementById('hudDistance').innerText = remainingDist > 0 ? `${Math.round(remainingDist)} m` : 'Đến nơi';
+      document.getElementById('hudInstruction').innerText = step.instruction;
+      document.getElementById('hudSubText').innerText = step.subText;
+      document.getElementById('hudManeuverIcon').querySelector('path').setAttribute('d', step.svgPath);
+
+      // 2. Cập nhật OLED ESP32
+      document.getElementById('oledDist').innerText = remainingDist > 0 ? `${Math.round(remainingDist)}m` : '0m';
+      document.getElementById('oledRoad').innerText = step.road;
+      document.getElementById('oledIcon').querySelector('path').setAttribute('d', step.svgPath);
+
+      // 3. Cập nhật Hộp Cảnh Báo "SẮP TỚI" (Đếm lùi khoảng cách thực tế đến Camera và Đèn tín hiệu)
+      const distToCam = Math.round(map.distance([carLat, carLng], [cameraPoint.lat, cameraPoint.lng]));
+      const distToLight = Math.round(map.distance([carLat, carLng], [lightPoint.lat, lightPoint.lng]));
+
+      document.getElementById('alertDist1').innerText = `${distToCam} m`;
+      document.getElementById('alertDist2').innerText = `${distToLight} m`;
+
+      // 4. Cảnh báo tốc độ
+      const speedSign = document.getElementById('hudSpeedSign');
+      if (simSpeedKmh > 60) {
+        speedSign.classList.add('warning');
+      } else {
+        speedSign.classList.remove('warning');
+      }
+    }
+
+    function jumpToStep(idx) {
+      currentStepIdx = idx;
+      simProgress = routeSteps[idx].coordIdx;
+      const coord = routeCoords[Math.floor(simProgress)];
+      carMarker.setLatLng(coord);
+      map.panTo(coord, { animate: true });
+      renderStepsList();
+      updateHud(routeSteps[idx], routeSteps[idx].distance, coord[0], coord[1]);
+    }
+
+    function toggleDrive() {
+      isDriving = !isDriving;
+      const btn = document.getElementById('btnPlayPause');
+      if (isDriving) {
+        btn.innerText = '⏸ Tạm dừng';
+        btn.classList.add('primary');
+        lastTime = performance.now();
+        simLoop();
+      } else {
+        btn.innerText = '▶ Tiếp tục lái';
+        btn.classList.remove('primary');
+        cancelAnimationFrame(animFrame);
+      }
+    }
+
+    function resetDrive() {
+      isDriving = false;
+      cancelAnimationFrame(animFrame);
+      document.getElementById('btnPlayPause').innerText = '▶ Bắt đầu lái';
+      jumpToStep(0);
+    }
+
+    function updateSimSpeed(val) {
+      simSpeedKmh = parseInt(val);
+      document.getElementById('lblSpeed').innerText = val;
+      document.getElementById('hudCurrentSpeed').innerHTML = `${val} <span style="font-size:11px;">km/h</span>`;
+      
+      const speedSign = document.getElementById('hudSpeedSign');
+      if (simSpeedKmh > 60) {
+        speedSign.classList.add('warning');
+      } else {
+        speedSign.classList.remove('warning');
+      }
+    }
+
+    let lastTime = 0;
+    function simLoop(time) {
+      if (!isDriving) return;
+
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      // Tính tốc độ di chuyển trên polyline theo km/h
+      // 1 giây xe đi được: (simSpeedKmh * 1000 / 3600) mét
+      const speedMps = (simSpeedKmh * 1000) / 3600;
+      const stepIncrement = (speedMps * dt) / 120; // 1 segment ~ 120m
+
+      simProgress += stepIncrement;
+
+      if (simProgress >= routeCoords.length - 1) {
+        simProgress = routeCoords.length - 1;
+        isDriving = false;
+        document.getElementById('btnPlayPause').innerText = '↺ Lặp lại';
+      }
+
+      // Nội suy vị trí xe mượt mà giữa 2 điểm
+      const idxA = Math.floor(simProgress);
+      const idxB = Math.min(idxA + 1, routeCoords.length - 1);
+      const ratio = simProgress - idxA;
+
+      const pA = routeCoords[idxA];
+      const pB = routeCoords[idxB];
+
+      const lat = pA[0] + (pB[0] - pA[0]) * ratio;
+      const lng = pA[1] + (pB[1] - pA[1]) * ratio;
+
+      carMarker.setLatLng([lat, lng]);
+
+      // Xoay hướng nón xe (Bearing calculation)
+      const angleDeg = (Math.atan2(pB[1] - pA[1], pB[0] - pA[0]) * 180) / Math.PI;
+      const rotateDeg = 90 - angleDeg; // convert to heading
+      const carElem = document.getElementById('carIconContainer');
+      if (carElem) {
+        carElem.style.transform = `rotate(${rotateDeg}deg)`;
+      }
+
+      // Tự động xoay tâm bản đồ theo xe
+      map.panTo([lat, lng], { animate: false });
+
+      // Xác định Step hiện tại và khoảng cách còn lại
+      for (let i = routeSteps.length - 1; i >= 0; i--) {
+        if (simProgress >= routeSteps[i].coordIdx) {
+          if (currentStepIdx !== i) {
+            currentStepIdx = i;
+            renderStepsList();
+          }
+          break;
+        }
+      }
+
+      const activeStep = routeSteps[currentStepIdx];
+      const nextCoord = routeCoords[Math.min(activeStep.coordIdx + 1, routeCoords.length - 1)];
+      const remainingDist = map.distance([lat, lng], nextCoord) * (routeSteps.length - currentStepIdx);
+
+      updateHud(activeStep, remainingDist, lat, lng);
+
+      if (isDriving) {
+        animFrame = requestAnimationFrame(simLoop);
+      }
+    }
+
+    // Khởi tạo ban đầu
+    updateHud(routeSteps[0], 750, routeCoords[0][0], routeCoords[0][1]);
+  </script>
+</body>
+</html>
