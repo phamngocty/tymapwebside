@@ -1,19 +1,19 @@
 {
   "app": {
-    "versionCode": 39,
-    "versionName": "1.0.39",
-    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.39/app-debug.apk",
+    "versionCode": 40,
+    "versionName": "1.0.40",
+    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.40/app-debug.apk",
     "apkName": "app-debug.apk",
     "changelog": "• Mở Khóa CartoDB Dark Hoàn Toàn Miễn Phí (Không Bắt Buộc Nhập API Key): Chuyển đổi trạng thái dịch vụ CartoDB Dark All thành dịch vụ miễn phí 100%, không còn bị chặn hay bắt buộc nhập API key trong mục Cài đặt và Kết nối.\n• Tích Hợp Nguồn Bản Đồ Mới: Esri Dark Canvas (Miễn Phí Toàn Cầu): Bổ sung nguồn bản đồ Esri Dark Canvas nổi tiếng với độ mượt mà tuyệt đối, tông màu xám đen sang trọng, tương phản cao, nạp siêu tốc và hỗ trợ tải offline đến Zoom 18 mà không cần đăng ký tài khoản."
   },
   "firmware": {
-    "versionCode": 39,
-    "versionName": "1.0.39",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.39/firmware.bin",
+    "versionCode": 40,
+    "versionName": "1.0.40",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.40/firmware.bin",
     "binName": "firmware.bin",
-    "secondaryBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.39/secondary_firmware.bin",
+    "secondaryBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.40/secondary_firmware.bin",
     "secondaryBinName": "secondary_firmware.bin",
-    "oledBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.39/secondary_firmware.bin",
+    "oledBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.40/secondary_firmware.bin",
     "changelog": "• Mở Khóa CartoDB Dark Hoàn Toàn Miễn Phí (Không Bắt Buộc Nhập API Key): Chuyển đổi trạng thái dịch vụ CartoDB Dark All thành dịch vụ miễn phí 100%, không còn bị chặn hay bắt buộc nhập API key trong mục Cài đặt và Kết nối.\n• Tích Hợp Nguồn Bản Đồ Mới: Esri Dark Canvas (Miễn Phí Toàn Cầu): Bổ sung nguồn bản đồ Esri Dark Canvas nổi tiếng với độ mượt mà tuyệt đối, tông màu xám đen sang trọng, tương phản cao, nạp siêu tốc và hỗ trợ tải offline đến Zoom 18 mà không cần đăng ký tài khoản."
   },
   "assets": []
