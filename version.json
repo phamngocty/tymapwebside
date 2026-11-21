@@ -4,7 +4,7 @@
     "versionName": "1.0.44",
     "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/app-debug.apk",
     "apkName": "app-debug.apk",
-    "changelog": "Khắc phục 100% cho chế độ 2D xoay hướng Bắc (North-Up):\n\nXóa bỏ lệnh ép giảm 50% chiều cao: Chế độ 2D xoay hướng Bắc giờ đây được áp dụng đầy đủ các tỷ lệ khung cắt oledRatioMode:\nChuẩn 2:1 (128x64)\nVuông 1:1 (Mở rộng bao quát gấp đôi diện tích đường xá)\nChữ nhật đứng 1:1.5 và Siêu dọc 1:2 (Bao quát toàn tuyến phía trướ"
+    "changelog": "sữa fw android và updat apk"
   },
   "firmware": {
     "versionCode": 44,
@@ -16,7 +16,7 @@
     "secondaryBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
     "secondaryBinName": "ios.bin",
     "oledBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
-    "changelog": "Khắc phục 100% cho chế độ 2D xoay hướng Bắc (North-Up):\n\nXóa bỏ lệnh ép giảm 50% chiều cao: Chế độ 2D xoay hướng Bắc giờ đây được áp dụng đầy đủ các tỷ lệ khung cắt oledRatioMode:\nChuẩn 2:1 (128x64)\nVuông 1:1 (Mở rộng bao quát gấp đôi diện tích đường xá)\nChữ nhật đứng 1:1.5 và Siêu dọc 1:2 (Bao quát toàn tuyến phía trướ"
+    "changelog": "sữa fw android và updat apk"
   },
   "firmware_oled": {
     "versionCode": 44,
@@ -25,7 +25,7 @@
     "chip": "ESP32-C3",
     "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/android.bin",
     "binName": "android.bin",
-    "changelog": "Khắc phục 100% cho chế độ 2D xoay hướng Bắc (North-Up):\n\nXóa bỏ lệnh ép giảm 50% chiều cao: Chế độ 2D xoay hướng Bắc giờ đây được áp dụng đầy đủ các tỷ lệ khung cắt oledRatioMode:\nChuẩn 2:1 (128x64)\nVuông 1:1 (Mở rộng bao quát gấp đôi diện tích đường xá)\nChữ nhật đứng 1:1.5 và Siêu dọc 1:2 (Bao quát toàn tuyến phía trướ"
+    "changelog": "sữa fw android và updat apk"
   },
   "firmware_ios": {
     "versionCode": 44,
@@ -34,7 +34,7 @@
     "chip": "ESP32-C3",
     "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
     "binName": "ios.bin",
-    "changelog": "Khắc phục 100% cho chế độ 2D xoay hướng Bắc (North-Up):\n\nXóa bỏ lệnh ép giảm 50% chiều cao: Chế độ 2D xoay hướng Bắc giờ đây được áp dụng đầy đủ các tỷ lệ khung cắt oledRatioMode:\nChuẩn 2:1 (128x64)\nVuông 1:1 (Mở rộng bao quát gấp đôi diện tích đường xá)\nChữ nhật đứng 1:1.5 và Siêu dọc 1:2 (Bao quát toàn tuyến phía trướ"
+    "changelog": "sữa fw android và updat apk"
   },
   "assets": [
     {
