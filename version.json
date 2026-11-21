@@ -1,26 +1,56 @@
 {
   "app": {
-    "versionCode": 43,
-    "versionName": "1.0.43",
-    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.43/app-debug.apk",
+    "versionCode": 44,
+    "versionName": "1.0.44",
+    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/app-debug.apk",
     "apkName": "app-debug.apk",
     "changelog": "Khắc phục 100% cho chế độ 2D xoay hướng Bắc (North-Up):\n\nXóa bỏ lệnh ép giảm 50% chiều cao: Chế độ 2D xoay hướng Bắc giờ đây được áp dụng đầy đủ các tỷ lệ khung cắt oledRatioMode:\nChuẩn 2:1 (128x64)\nVuông 1:1 (Mở rộng bao quát gấp đôi diện tích đường xá)\nChữ nhật đứng 1:1.5 và Siêu dọc 1:2 (Bao quát toàn tuyến phía trướ"
   },
   "firmware": {
-    "versionCode": 43,
-    "versionName": "1.0.43",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.43/firmware.bin",
-    "binName": "firmware.bin",
-    "secondaryBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.43/secondary_firmware.bin",
-    "secondaryBinName": "secondary_firmware.bin",
-    "oledBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.43/secondary_firmware.bin",
+    "versionCode": 44,
+    "versionName": "1.0.44",
+    "display": "GC9A01",
+    "chip": "ESP32-S3",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/android_gc9a01.bin",
+    "binName": "android_gc9a01.bin",
+    "secondaryBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
+    "secondaryBinName": "ios.bin",
+    "oledBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
+    "changelog": "Khắc phục 100% cho chế độ 2D xoay hướng Bắc (North-Up):\n\nXóa bỏ lệnh ép giảm 50% chiều cao: Chế độ 2D xoay hướng Bắc giờ đây được áp dụng đầy đủ các tỷ lệ khung cắt oledRatioMode:\nChuẩn 2:1 (128x64)\nVuông 1:1 (Mở rộng bao quát gấp đôi diện tích đường xá)\nChữ nhật đứng 1:1.5 và Siêu dọc 1:2 (Bao quát toàn tuyến phía trướ"
+  },
+  "firmware_oled": {
+    "versionCode": 44,
+    "versionName": "1.0.44",
+    "display": "OLED",
+    "chip": "ESP32-C3",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/android.bin",
+    "binName": "android.bin",
+    "changelog": "Khắc phục 100% cho chế độ 2D xoay hướng Bắc (North-Up):\n\nXóa bỏ lệnh ép giảm 50% chiều cao: Chế độ 2D xoay hướng Bắc giờ đây được áp dụng đầy đủ các tỷ lệ khung cắt oledRatioMode:\nChuẩn 2:1 (128x64)\nVuông 1:1 (Mở rộng bao quát gấp đôi diện tích đường xá)\nChữ nhật đứng 1:1.5 và Siêu dọc 1:2 (Bao quát toàn tuyến phía trướ"
+  },
+  "firmware_ios": {
+    "versionCode": 44,
+    "versionName": "1.0.44",
+    "display": "iOS Sygic BLE",
+    "chip": "ESP32-C3",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
+    "binName": "ios.bin",
     "changelog": "Khắc phục 100% cho chế độ 2D xoay hướng Bắc (North-Up):\n\nXóa bỏ lệnh ép giảm 50% chiều cao: Chế độ 2D xoay hướng Bắc giờ đây được áp dụng đầy đủ các tỷ lệ khung cắt oledRatioMode:\nChuẩn 2:1 (128x64)\nVuông 1:1 (Mở rộng bao quát gấp đôi diện tích đường xá)\nChữ nhật đứng 1:1.5 và Siêu dọc 1:2 (Bao quát toàn tuyến phía trướ"
   },
   "assets": [
     {
+      "name": "android_gc9a01.bin",
+      "label": "android_gc9a01.bin",
+      "url": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/android_gc9a01.bin"
+    },
+    {
+      "name": "factory.bin",
+      "label": "factory.bin",
+      "url": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/factory.bin"
+    },
+    {
       "name": "index.html",
       "label": "index.html",
-      "url": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.43/index.html"
+      "url": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/index.html"
     }
   ]
 }
