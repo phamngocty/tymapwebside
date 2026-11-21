@@ -1560,15 +1560,15 @@
             <!-- Quick Action Buttons -->
             <div class="hero-actions">
                 <!-- Nút Tải App APK Nổi Bật (Lead CTA) -->
-                <a href="https://github.com/phamngocty/tymapwebside/releases/latest/download/TYMAP.apk"
-                    class="btn btn-apk-cta" download="TYMAP.apk" title="Tải ứng dụng TYMAP APK phiên bản mới nhất cho Android">
+                <a href="https://github.com/phamngocty/tymapwebside/releases/latest/download/app-debug.apk"
+                    class="btn btn-apk-cta dynamic-apk-link" download="TYMAP.apk" title="Tải ứng dụng TYMAP APK phiên bản mới nhất cho Android">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="7 10 12 15 17 10"></polyline>
                         <line x1="12" y1="15" x2="12" y2="3"></line>
                     </svg>
-                    ⚡ Tải App TYMAP (APK)
+                    <span class="apk-btn-text">⚡ Tải App TYMAP (APK)</span>
                 </a>
 
                 <a href="#chap-android" class="btn btn-android">
@@ -1783,7 +1783,7 @@
                                 <p>Tải file <code>TYMAP_v2.apk</code> về điện thoại và cài đặt. Bật sẵn
                                     <strong>Bluetooth</strong> và <strong>GPS Vị Trí</strong> trên máy.
                                 </p>
-                                <a href="https://github.com/phamngocty/tymapwebside/releases/latest/download/TYMAP.apk" download="TYMAP.apk" style="display:inline-flex; align-items:center; gap:8px; margin-top:8px; padding:6px 14px; background:rgba(61,220,132,0.15); border:1px solid rgba(61,220,132,0.4); border-radius:8px; color:#fff; text-decoration:none; font-size:12px; font-weight:600; transition:all 0.2s;">
+                                <a href="https://github.com/phamngocty/tymapwebside/releases/latest/download/app-debug.apk" download="TYMAP.apk" class="dynamic-apk-link" style="display:inline-flex; align-items:center; gap:8px; margin-top:8px; padding:6px 14px; background:rgba(61,220,132,0.15); border:1px solid rgba(61,220,132,0.4); border-radius:8px; color:#fff; text-decoration:none; font-size:12px; font-weight:600; transition:all 0.2s;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                                     🤖 Tải Trực Tiếp TYMAP.apk (Bản Mới Nhất) ↗
                                 </a>
@@ -1915,7 +1915,7 @@
                             <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Xem video thao tác
                                 thực tế từng bước mở quyền hệ thống và bắt đầu hành trình Google Maps.</p>
                         </div>
-                        <a href="https://github.com/phamngocty/tymapwebside/releases/latest/download/TYMAP.apk" download="TYMAP.apk" class="btn btn-android" style="padding:9px 18px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                        <a href="https://github.com/phamngocty/tymapwebside/releases/latest/download/app-debug.apk" download="TYMAP.apk" class="btn btn-android dynamic-apk-link" style="padding:9px 18px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                             🤖 Tải App TYMAP (Bản Mới Nhất) ↗
                         </a>
@@ -3276,6 +3276,57 @@
             }
         }
 
+        // =========================================================================
+        // TỰ ĐỘNG PHÂN GIẢI & CẬP NHẬT LINK TẢI APK MỚI NHẤT TỪ GITHUB RELEASES
+        // =========================================================================
+        async function fetchLatestApkRelease() {
+            const apiUrl = 'https://api.github.com/repos/phamngocty/tymapwebside/releases/latest';
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('GitHub API HTTP ' + response.status);
+                const data = await response.json();
+
+                if (data && Array.isArray(data.assets) && data.assets.length > 0) {
+                    const apkAssets = data.assets.filter(a => a.name && a.name.toLowerCase().endsWith('.apk'));
+                    if (apkAssets.length > 0) {
+                        // Thứ tự ưu tiên: TYMAP.apk -> file có chữ "release" -> file APK đầu tiên (ví dụ app-debug.apk)
+                        let targetApk = apkAssets.find(a => a.name.toLowerCase() === 'tymap.apk');
+                        if (!targetApk) {
+                            targetApk = apkAssets.find(a => a.name.toLowerCase().includes('release'));
+                        }
+                        if (!targetApk) {
+                            targetApk = apkAssets[0];
+                        }
+
+                        const downloadUrl = targetApk.browser_download_url;
+                        const fileName = targetApk.name;
+                        const tagName = data.tag_name || '';
+
+                        console.log(`[TYMAP Web] Tự động cập nhật APK mới nhất: ${fileName} (${tagName}) -> ${downloadUrl}`);
+
+                        const apkLinks = document.querySelectorAll('a.dynamic-apk-link, a.btn-apk-cta, a[download*=".apk"], a[href*="releases"][href*=".apk"]');
+                        apkLinks.forEach(link => {
+                            link.href = downloadUrl;
+                            link.setAttribute('download', fileName);
+                            link.setAttribute('target', '_blank');
+                            link.setAttribute('rel', 'noopener noreferrer');
+                            link.title = `Tải ứng dụng TYMAP (${fileName} ${tagName}) cho Android`;
+                        });
+
+                        const btnText = document.querySelector('.apk-btn-text');
+                        if (btnText && tagName) {
+                            btnText.innerHTML = `⚡ Tải App TYMAP (APK ${tagName})`;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn('[TYMAP Web] Không thể lấy release mới qua GitHub API, sử dụng fallback mặc định:', err);
+            }
+        }
+
+        // Kích hoạt fetch API ngay lập tức không cần chờ toàn bộ tài nguyên nặng tải xong
+        fetchLatestApkRelease();
+
         window.addEventListener('DOMContentLoaded', () => {
             updateAndroidSubUI();
             renderAndroidStudio();
@@ -3284,6 +3335,7 @@
             populateGallery('galleryAndroid', andGallery);
             populateGallery('galleryIos', iosGallery);
             checkVideos();
+            fetchLatestApkRelease();
         });
     </script>
 </body>
