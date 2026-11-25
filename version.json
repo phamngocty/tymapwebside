@@ -1,56 +1,36 @@
 {
   "app": {
-    "versionCode": 44,
-    "versionName": "1.0.44",
-    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/app-debug.apk",
-    "apkName": "app-debug.apk",
-    "changelog": "sữa fw android và updat apk"
+    "versionCode": 45,
+    "versionName": "1.0.45",
+    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/TYMAP_v1.0.45.apk",
+    "apkDebugUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/app-debug.apk",
+    "changelog": "Tự động lưu API Key sau khi kiểm tra thành công, sửa kiểm tra Valhalla và CartoDB OLED"
   },
   "firmware": {
-    "versionCode": 44,
-    "versionName": "1.0.44",
+    "versionCode": 45,
+    "versionName": "1.0.45",
     "display": "GC9A01",
     "chip": "ESP32-S3",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/android_gc9a01.bin",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/android_gc9a01.bin",
     "binName": "android_gc9a01.bin",
-    "secondaryBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
-    "secondaryBinName": "ios.bin",
-    "oledBinUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
-    "changelog": "sữa fw android và updat apk"
+    "changelog": "Tối ưu hóa firmware ESP32-S3 GC9A01"
   },
   "firmware_oled": {
-    "versionCode": 44,
-    "versionName": "1.0.44",
+    "versionCode": 45,
+    "versionName": "1.0.45",
     "display": "OLED",
     "chip": "ESP32-C3",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/android.bin",
-    "binName": "android.bin",
-    "changelog": "sữa fw android và updat apk"
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/android_oled.bin",
+    "binName": "android_oled.bin",
+    "changelog": "Tối ưu hóa firmware ESP32-S3 GC9A01"
   },
   "firmware_ios": {
-    "versionCode": 44,
-    "versionName": "1.0.44",
+    "versionCode": 45,
+    "versionName": "1.0.45",
     "display": "iOS Sygic BLE",
     "chip": "ESP32-C3",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/ios.bin",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/ios.bin",
     "binName": "ios.bin",
-    "changelog": "sữa fw android và updat apk"
-  },
-  "assets": [
-    {
-      "name": "android_gc9a01.bin",
-      "label": "android_gc9a01.bin",
-      "url": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/android_gc9a01.bin"
-    },
-    {
-      "name": "factory.bin",
-      "label": "factory.bin",
-      "url": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/factory.bin"
-    },
-    {
-      "name": "index.html",
-      "label": "index.html",
-      "url": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.44/index.html"
-    }
-  ]
+    "changelog": "Tối ưu hóa firmware ESP32-S3 GC9A01"
+  }
 }
