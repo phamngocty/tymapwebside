@@ -1,35 +1,35 @@
 {
   "app": {
-    "versionCode": 45,
-    "versionName": "1.0.45",
-    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/TYMAP_v1.0.45.apk",
-    "apkDebugUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/app-debug.apk",
-    "changelog": "Tự động lưu API Key sau khi kiểm tra thành công, sửa kiểm tra Valhalla và CartoDB OLED"
+    "versionCode": 46,
+    "versionName": "1.0.46",
+    "apkUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.46/TYMAP_v1.0.46.apk",
+    "apkDebugUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.46/app-debug.apk",
+    "changelog": "Sửa chuẩn góc quay nón định hướng và mũi tên Blue Dot (Track Up luôn 12h, North Up & La bàn xoay thuận chiều thực tế)"
   },
   "firmware": {
-    "versionCode": 45,
-    "versionName": "1.0.45",
+    "versionCode": 46,
+    "versionName": "1.0.46",
     "display": "GC9A01",
     "chip": "ESP32-S3",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/android_gc9a01.bin",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.46/android_gc9a01.bin",
     "binName": "android_gc9a01.bin",
     "changelog": "Tối ưu hóa firmware ESP32-S3 GC9A01"
   },
   "firmware_oled": {
-    "versionCode": 45,
-    "versionName": "1.0.45",
+    "versionCode": 46,
+    "versionName": "1.0.46",
     "display": "OLED",
     "chip": "ESP32-C3",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/android_oled.bin",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.46/android_oled.bin",
     "binName": "android_oled.bin",
     "changelog": "Tối ưu hóa firmware ESP32-S3 GC9A01"
   },
   "firmware_ios": {
-    "versionCode": 45,
-    "versionName": "1.0.45",
+    "versionCode": 46,
+    "versionName": "1.0.46",
     "display": "iOS Sygic BLE",
     "chip": "ESP32-C3",
-    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.45/ios.bin",
+    "binUrl": "https://github.com/phamngocty/tymapwebside/releases/download/v1.0.46/ios.bin",
     "binName": "ios.bin",
     "changelog": "Tối ưu hóa firmware ESP32-S3 GC9A01"
   }
